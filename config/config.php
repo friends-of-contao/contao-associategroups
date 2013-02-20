@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2011 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,16 +21,15 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Andreas Schempp 2010
+ * @copyright  Andreas Schempp 2011
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id: tl_user.php 120 2010-07-07 20:44:43Z aschempp $
+ * @version    $Id: $
  */
 
 
 /**
- * Callbacks
+ * Hooks
  */
-$GLOBALS['TL_DCA']['tl_user']['config']['ondelete_callback'][] = array('AssociateGroups', 'deleteGroups');
-$GLOBALS['TL_DCA']['tl_user']['fields']['groups']['save_callback'][] = array('AssociateGroups', 'saveGroups');
+$GLOBALS['TL_HOOKS']['createNewUser'][] = array('AssociateGroups', 'createNewUser');
 

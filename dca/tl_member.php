@@ -24,50 +24,13 @@
  * @copyright  Andreas Schempp 2010
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
- * @version    $Id$
+ * @version    $Id: tl_member.php 120 2010-07-07 20:44:43Z aschempp $
  */
 
 
 /**
- * Fields
+ * Callbacks
  */
-$GLOBALS['TL_DCA']['tl_member']['fields']['groups']['save_callback'][] = array('tl_member_associategroups', 'saveGroups');
-
-
-class tl_member_associategroups extends Backend
-{
-	
-	/**
-	 * Save member groups to the association table
-	 */
-	public function saveGroups($varValue, $dc)
-	{
-		$arrGroups = deserialize($varValue);
-		
-		if (!is_array($arrGroups) || !count($arrGroups))
-		{
-			$this->Database->query("DELETE FROM tl_member_to_group WHERE member_id={$dc->id}");
-		}
-		else
-		{
-			$arrAssociations = $this->Database->execute("SELECT group_id FROM tl_member_to_group WHERE member_id={$dc->id}")->fetchEach('group_id');
-			
-			$arrDelete = array_diff($arrAssociations, $arrGroups);
-			$arrInsert = array_diff($arrGroups, $arrAssociations);
-			
-			if (count($arrDelete) > 0)
-			{
-				$this->Database->query("DELETE FROM tl_member_to_group WHERE member_id={$dc->id} AND group_id IN (" . implode(',', $arrDelete) . ")");
-			}
-			
-			if (count($arrInsert) > 0)
-			{
-				$time = time();
-				$this->Database->query("INSERT INTO tl_member_to_group (tstamp,member_id,group_id) VALUES ($time,{$dc->id}," . implode("), ($time,{$dc->id},", $arrInsert) . ")");
-			}
-		}
-		
-		return $varValue;
-	}
-}
+$GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = array('AssociateGroups', 'deleteGroups');
+$GLOBALS['TL_DCA']['tl_member']['fields']['groups']['save_callback'][] = array('AssociateGroups', 'saveGroups');
 
