@@ -116,20 +116,21 @@ class AssociateGroups extends Controller
 	{
 		if ($this->Database->tableExists('tl_member_to_group'))
 		{
-			$this->Database->execute("DROP TABLE tl_member_to_group");
+			$this->Database->execute("TRUNCATE tl_member_to_group");
 		}
-		
-		$time = time();
-		
-		$this->Database->query("CREATE TABLE `tl_member_to_group` (
-									  `id` int(10) unsigned NOT NULL auto_increment,
-									  `tstamp` int(10) unsigned NOT NULL default '0',
-									  `member_id` int(10) unsigned NOT NULL default '0',
-									  `group_id` int(10) unsigned NOT NULL default '0',
-									  PRIMARY KEY  (`id`)
-									) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-									
-		$objMembers = $this->Database->execute("SELECT id,groups FROM tl_member WHERE groups!=''");
+		else
+		{		
+      $this->Database->query("CREATE TABLE `tl_member_to_group` (
+                                `id` int(10) unsigned NOT NULL auto_increment,
+                                `tstamp` int(10) unsigned NOT NULL default '0',
+                                `member_id` int(10) unsigned NOT NULL default '0',
+                                `group_id` int(10) unsigned NOT NULL default '0',
+                                PRIMARY KEY  (`id`)
+                              ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		}
+    
+    $time = time();							
+		$objMembers = $this->Database->execute("SELECT id,groups FROM tl_member WHERE groups!='' ORDER BY id ASC");
 		
 		while( $objMembers->next() )
 		{
@@ -152,20 +153,21 @@ class AssociateGroups extends Controller
 	{
 		if ($this->Database->tableExists('tl_user_to_group'))
 		{
-			$this->Database->execute("DROP TABLE tl_user_to_group");
+			$this->Database->execute("TRUNCATE tl_user_to_group");
 		}
-		
-		$time = time();
-		
-		$this->Database->query("CREATE TABLE `tl_user_to_group` (
-									  `id` int(10) unsigned NOT NULL auto_increment,
-									  `tstamp` int(10) unsigned NOT NULL default '0',
-									  `user_id` int(10) unsigned NOT NULL default '0',
-									  `group_id` int(10) unsigned NOT NULL default '0',
-									  PRIMARY KEY  (`id`)
-									) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-									
-		$objUsers = $this->Database->execute("SELECT id,groups FROM tl_user WHERE groups!=''");
+    else
+    {		
+      $this->Database->query("CREATE TABLE `tl_user_to_group` (
+                                `id` int(10) unsigned NOT NULL auto_increment,
+                                `tstamp` int(10) unsigned NOT NULL default '0',
+                                `user_id` int(10) unsigned NOT NULL default '0',
+                                `group_id` int(10) unsigned NOT NULL default '0',
+                                PRIMARY KEY  (`id`)
+                              ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+    }  
+    
+    $time = time();
+		$objUsers = $this->Database->execute("SELECT id,groups FROM tl_user WHERE groups!='' ORDER BY id ASC");
 		
 		while( $objUsers->next() )
 		{
