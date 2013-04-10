@@ -40,17 +40,16 @@ class AssociateGroups extends Controller
 	
 	/**
 	 * Save member groups to the association table
-	 * @param	mixed	$varValue
 	 * @param	object	$dc
 	 * @return	mixed
-	 * @link	http://www.contao.org/callbacks.html save_callback
+	 * @link	http://www.contao.org/callbacks.html onsubmit_callback
 	 */
-	public function saveGroups($varValue, $dc)
+	public function submitGroups($dc)
 	{
 		$strField = substr($dc->table, 3);
-		$arrGroups = deserialize($varValue);
+		$arrGroups = array_filter(array_unique(array_map('intval', deserialize($dc->activeRecord->groups, true))));
 		
-		if (!is_array($arrGroups) || !count($arrGroups))
+		if (!$arrGroups)
 		{
 			$this->Database->query("DELETE FROM {$dc->table}_to_group WHERE {$strField}_id={$dc->id}");
 		}
