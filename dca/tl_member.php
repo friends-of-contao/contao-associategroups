@@ -32,5 +32,5 @@
  * Callbacks
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = array('AssociateGroups', 'deleteGroups');
-$GLOBALS['TL_DCA']['tl_member']['fields']['groups']['save_callback'][] = array('AssociateGroups', 'saveGroups');
+$GLOBALS['TL_DCA']['tl_member']['config']['onsubmit_callback'][] = array('AssociateGroups', 'submitGroups');
 
