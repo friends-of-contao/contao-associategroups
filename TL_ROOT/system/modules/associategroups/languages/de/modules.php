@@ -1,3 +1,4 @@
 <?php
 
-$GLOBALS['TL_LANG']['MOD']['associategroups'][] = array('Mitglieder & Benutzer Gruppen-Verknüpfungstabellen');
+$GLOBALS['TL_LANG']['MOD']['associategroups']
+	= 'Mitglieder & Benutzer Gruppen-Verknüpfungstabellen';
