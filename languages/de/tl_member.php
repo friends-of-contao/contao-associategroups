@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2013 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,26 +21,16 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Andreas Schempp 2010
+ * @copyright  Andreas Schempp 2013
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  * @version    $Id: tl_member.php 120 2010-07-07 20:44:43Z aschempp $
  */
 
 
-/**
- * Callbacks
- */
-$GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = array('AssociateGroups', 'deleteGroups');
-$GLOBALS['TL_DCA']['tl_member']['config']['onsubmit_callback'][] = array('AssociateGroups', 'submitGroups');
 
-/**
- * List
- */
-$GLOBALS['TL_DCA']['tl_member']['list']['global_operations']['sync_associate_groups'] = array
+$GLOBALS['TL_LANG']['tl_member']['sync_associate_groups'] = array
 (
-	'label'				=> &$GLOBALS['TL_LANG']['tl_member']['sync_associate_groups'],
-	'href'				=> 'key=sync_tl_member_to_group',
-	'class'				=> 'sync_associate_groups header_sync_all',
-	'attributes'		=> 'onclick="Backend.getScrollOffset();"'
+	'Synchronisation',
+	'Syncronisiert die Mitglieder und Gruppen in der Zwischentabelle.'
 );

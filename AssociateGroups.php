@@ -106,5 +106,79 @@ class AssociateGroups extends Controller
 			$this->Database->execute("INSERT INTO tl_member_to_group (tstamp,member_id,group_id) VALUES ($time, $intId, " . implode("), ($time, $intId, ", array_map('intval', $arrGroups)) . ")");
 		}
 	}
+	
+	/**
+	 * Delete tl_member_to_group and create new
+	 * @return	void
+	 */
+	public function syncMemberToGroup()
+	{
+		if ($this->Database->tableExists('tl_member_to_group'))
+		{
+			$this->Database->execute("TRUNCATE tl_member_to_group");
+		}
+		else
+		{		
+      $this->Database->query("CREATE TABLE `tl_member_to_group` (
+                                `id` int(10) unsigned NOT NULL auto_increment,
+                                `tstamp` int(10) unsigned NOT NULL default '0',
+                                `member_id` int(10) unsigned NOT NULL default '0',
+                                `group_id` int(10) unsigned NOT NULL default '0',
+                                PRIMARY KEY  (`id`)
+                              ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		}
+    
+    $time = time();							
+		$objMembers = $this->Database->execute("SELECT id,groups FROM tl_member WHERE groups!='' ORDER BY id ASC");
+		
+		while( $objMembers->next() )
+		{
+			$arrGroups = deserialize($objMembers->groups);
+			
+			if (is_array($arrGroups) && count($arrGroups))
+			{
+				$this->Database->query("INSERT INTO tl_member_to_group (tstamp,member_id,group_id) VALUES ($time,{$objMembers->id}," . implode("), ($time,{$objMembers->id},", $arrGroups) . ")");
+			}
+		}
+
+		$this->redirect($this->Environment->script . '?do=member');
+	}
+	
+	/**
+	 * Delete tl_user_to_group and create new
+	 * @return	void
+	 */
+	public function syncUserToGroup()
+	{
+		if ($this->Database->tableExists('tl_user_to_group'))
+		{
+			$this->Database->execute("TRUNCATE tl_user_to_group");
+		}
+    else
+    {		
+      $this->Database->query("CREATE TABLE `tl_user_to_group` (
+                                `id` int(10) unsigned NOT NULL auto_increment,
+                                `tstamp` int(10) unsigned NOT NULL default '0',
+                                `user_id` int(10) unsigned NOT NULL default '0',
+                                `group_id` int(10) unsigned NOT NULL default '0',
+                                PRIMARY KEY  (`id`)
+                              ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+    }  
+    
+    $time = time();
+		$objUsers = $this->Database->execute("SELECT id,groups FROM tl_user WHERE groups!='' ORDER BY id ASC");
+		
+		while( $objUsers->next() )
+		{
+			$arrGroups = deserialize($objUsers->groups);
+			
+			if (is_array($arrGroups) && count($arrGroups))
+			{
+				$this->Database->query("INSERT INTO tl_user_to_group (tstamp,user_id,group_id) VALUES ($time,{$objUsers->id}," . implode("), ($time,{$objUsers->id},", $arrGroups) . ")");
+			}
+		}
+
+		$this->redirect($this->Environment->script . '?do=user');
+	}
 }
 
