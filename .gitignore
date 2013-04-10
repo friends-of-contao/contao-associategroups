@@ -1,5 +1,8 @@
-/.project
-/.settings
-/build
-/.build
-/.buildpath
+/*
+!/.gitignore
+!/TL_ROOT/
+!/dev/
+!/ext/
+!/publish/
+!/build.xml
+!/README.md
