@@ -1,0 +1,25 @@
+=== Titel
+Associate Groups
+
+
+=== Suchbegriffe
+associate,member groups,user groups
+
+
+=== Teaser
+Creates an association table for member and user groups
+
+
+=== Beschreibung
+<p><strong>This extension is intended for developers only!</strong></p>
+<p>After installing this extensions, the system will maintain two new tables
+called tl_member_to_group and tl_user_to_group. These table hold references for
+group assignments, allowing you to be able to search for members/users belonging
+to a give group (id).</p>
+
+
+=== Freigabe-Notizen und Änderungs-Log
+
+
+=== Handbuch-Link
+https://github.com/backbone87/contao-associategroups/issues
