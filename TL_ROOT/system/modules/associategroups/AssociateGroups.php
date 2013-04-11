@@ -98,7 +98,7 @@ EOT;
 
 		$arrGroups = array_map('intval', $arrGroups);
 		$strValues = sprintf('(%s,%s,?), ', time(), $intId);
-		$strValues = rtrim(str_repeat($strValues, count($arrInsert)), ', ');
+		$strValues = rtrim(str_repeat($strValues, count($arrGroups)), ', ');
 		$strQuery = <<<EOT
 INSERT
 INTO	tl_member_to_group (tstamp, member_id, group_id)
