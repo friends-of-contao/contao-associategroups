@@ -15,8 +15,17 @@ class AssociateGroups extends Controller {
 	 * @link http://www.contao.org/callbacks.html onsubmit_callback
 	 */
 	public function submitGroups($objDC) {
-		$strType = substr($objDC->table, 3);
-		$arrGroups = array_filter(array_unique(array_map('intval', deserialize($objDC->activeRecord->groups, true))));
+		if($objDC instanceof FrontendUser) {
+			$strType = 'member';
+			$arrGroups = deserialize($objDC->groups, true);
+		} elseif(!is_object($objDC) || !$objDC->table || !is_object($objDC->activeRecord)) {
+			return;
+		} else {
+			$strType = substr($objDC->table, 3);
+			$arrGroups = deserialize($objDC->activeRecord->groups, true);
+		}
+
+		$arrGroups = array_filter(array_unique(array_map('intval', $arrGroups)));
 
 		if(!$arrGroups) {
 			$strQuery = <<<EOT
