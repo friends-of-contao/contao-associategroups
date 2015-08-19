@@ -1,0 +1,67 @@
+{
+  "name": "friends-of-contao/contao-associategroups",
+  "description": "Creates association tables for member groups and user groups.",
+  "keywords": [
+    "contao",
+    "associate",
+    "member group",
+    "user group"
+  ],
+  "type": "contao-module",
+  "license": "LGPL-3.0+",
+  "authors": [
+    {
+      "name":"terminal42 gmbh",
+      "homepage":"http://terminal42.ch"
+    },
+    {
+      "name" : "Oliver Hoff",
+      "email" : "oliver@hofff.com",
+      "homepage" : "https://www.hofff.com",
+      "role" : "Developer"
+    },
+    {
+      "name": "David Molineus",
+      "email": "david.molineus@netzmacht.de",
+      "homepage": "http://netzmacht.de",
+      "role": "Developer"
+    },
+    {
+      "name":"Cliff Parnitzky",
+      "email":"contao@cliff-parnitzky.de",
+      "homepage" : "https://contao.cliff-parnitzky.de",
+      "role":"Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/friends-of-contao/contao-associategroups/issues",
+    "irc": "irc://irc.freenode.org/contao.dev",
+    "source": "https://github.com/friends-of-contao/contao-associategroups"
+  },
+  "require": {
+    "php": ">=5.3",
+    "contao/core":">=3.2.0,<3.6",
+    "contao-community-alliance/composer-plugin": "~2.0"
+  },
+  "conflict": {
+    "contao/core":"3.4.0,3.4.1,3.4.2" 
+  },
+  "replace": {
+    "contao-legacy/associategroups": "*"
+  }, 
+  "extra": {
+    "contao": {
+      "sources": {
+        "contao": "system/modules/associategroups"
+      }
+      "runonce": [
+        "runonce/runonce.php"
+      ]
+    },
+    "branch-alias": {
+      "dev-master": "1.3.x-dev"
+    }
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev"
+}
