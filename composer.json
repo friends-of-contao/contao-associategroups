@@ -53,7 +53,7 @@
     "contao": {
       "sources": {
         "contao": "system/modules/associategroups"
-      }
+      },
       "runonce": [
         "runonce/runonce.php"
       ]
