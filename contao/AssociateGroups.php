@@ -180,7 +180,8 @@ EOT;
 	public function syncMemberToGroup() {
 		$this->syncAssociationTable('member');
 		\Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['memberGroupsSynchronized']);
-		$this->redirect($this->Environment->script . '?do=member');
+		$this->redirect(TL_SCRIPT . '?do=member');
+
 	}
 
 	/**
@@ -191,7 +192,7 @@ EOT;
 	public function syncUserToGroup() {
 		$this->syncAssociationTable('user');
 		\Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['userGroupsSynchronized']);
-		$this->redirect($this->Environment->script . '?do=user');
+		$this->redirect(TL_SCRIPT . '?do=user');
 	}
 
 }
