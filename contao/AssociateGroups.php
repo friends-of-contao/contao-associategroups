@@ -147,9 +147,9 @@ EOT;
 		$this->cleanTable($strType);
 
 		$strQuery = <<<EOT
-SELECT		id, groups
+SELECT		id, `groups`
 FROM		tl_{$strType}
-WHERE		groups != ''
+WHERE		`groups` != ''
 ORDER BY	id
 EOT;
 		$objGroups = $this->Database->execute($strQuery);
