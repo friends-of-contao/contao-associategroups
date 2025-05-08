@@ -1,5 +1,10 @@
 # Changelog for Contao extension "Associate Groups"
 
+## 1.3.4
+
+* *Fix*: Fix composer.json
+* *Change*: Drop support for Contao < `^4.13`
+
 ## 1.3.0
 
 * *Fix*: small CSS fixing
