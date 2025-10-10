@@ -1,5 +1,11 @@
 # Changelog for Contao extension "Associate Groups"
 
+## 2.0.0
+
+* *Change*: Drop support for Contao 4, require at least Contao 5.3
+* *Change*: Increase PHP minimum version to 8.3
+* *Change*: Rework as a bundle
+
 ## 1.3.4
 
 * *Fix*: Fix composer.json

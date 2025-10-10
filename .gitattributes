@@ -1,17 +1,31 @@
 # Auto detect text files and perform LF normalization
-* text=auto
+* text-auto
 
 # Custom for Visual Studio
-*.cs     diff=csharp
+*.cs diff=csharp
 
 # Standard to msysgit
-*.doc	 diff=astextplain
-*.DOC	 diff=astextplain
-*.docx diff=astextplain
+*.DOC diff=astextplain
 *.DOCX diff=astextplain
-*.dot  diff=astextplain
-*.DOT  diff=astextplain
-*.pdf  diff=astextplain
-*.PDF	 diff=astextplain
-*.rtf	 diff=astextplain
-*.RTF	 diff=astextplain
+*.DOT diff=astextplain
+*.PDF diff=astextplain
+*.RTF diff=astextplain
+*.doc diff=astextplain
+*.docx diff=astextplain
+*.dot diff=astextplain
+*.pdf diff=astextplain
+*.rtf diff=astextplain
+
+# Configuration
+.editorconfig export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.phpcq.lock export-ignore
+.phpcq.yaml.dist export-ignore
+companion.json export-ignore
+composer.lock -diff
+phpcs.xml.dist export-ignore
+psalm.xml export-ignore
+
+# PHP files
+*.php text eol=lf diff=php
