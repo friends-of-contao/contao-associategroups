@@ -15,7 +15,6 @@ $GLOBALS['TL_DCA']['tl_user_to_group'] = [
             'sql' => [
                 'type'          => Types::INTEGER,
                 'notnull'       => true,
-                'default'       => 0,
                 'autoincrement' => true,
             ],
         ],
