@@ -42,6 +42,8 @@
     "php": "^8.3",
     "contao/core-bundle": "^5.3",
     "doctrine/dbal": "^3.9 || ^4.9",
+    "symfony/config": "^6.4 || ^7.0",
+    "symfony/dependency-injection": "^6.4 || ^7.0",
     "symfony/http-foundation": "^6.4 || ^7.0",
     "symfony/http-kernel": "^6.4 || ^7.0",
     "symfony/routing": "^6.4 || ^7.0",
@@ -77,8 +79,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "1.3.x-dev",
-      "dev-develop": "2.0.x-dev"
+      "dev-develop": "2.0.x-dev",
+      "dev-master": "1.3.x-dev"
     },
     "contao-manager-plugin": "FriendsOfContao\\AssociateGroups\\ContaoManager\\Plugin"
   }
