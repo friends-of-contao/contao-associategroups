@@ -31,33 +31,30 @@ final readonly class AssociateGroups
             throw new Exception('Can not handle ' . $type . ' for group association sync');
         }
 
-        $transaction = function () use ($type, $table): void {
-            $this->cleanTable($type);
+        $this->cleanTable($type);
 
-            $result = $this->connection->createQueryBuilder()
-                ->select('id, groups')
-                ->from($table)
-                ->where('groups != \'\'')
-                ->executeQuery();
+        $result = $this->connection->createQueryBuilder()
+            ->select('id, groups')
+            ->from($table)
+            ->where('groups != \'\'')
+            ->executeQuery()
+            ->fetchAllAssociative();
 
-            while ($row = $result->fetchAssociative()) {
-                /** @psalm-suppress ArgumentTypeCoercion */
-                $groups = $this->uniqueGroups(StringUtil::deserialize($row['groups'], true));
-                if ($groups === []) {
-                    continue;
-                }
-
-                $this->insertRows($type, (int) $row['id'], $groups);
+        foreach ($result as $row) {
+            /** @psalm-suppress ArgumentTypeCoercion */
+            $groups = $this->uniqueGroups(StringUtil::deserialize($row['groups'], true));
+            if ($groups === []) {
+                continue;
             }
-        };
 
-        $this->connection->transactional($transaction);
+            $this->insertRows($type, (int) $row['id'], $groups);
+        }
     }
 
     public function isOutOfSync(string $type): bool
     {
         $source = $this->connection->createQueryBuilder()
-            ->select('r.id, r.groups')
+            ->select('id, groups')
             ->from($this->sourceTable($type))
             ->where('groups != \'\'')
             ->executeQuery()
@@ -66,7 +63,7 @@ final readonly class AssociateGroups
         foreach ($source as $row) {
             $associations = $this->connection->createQueryBuilder()
                 ->select('group_id')
-                ->from($this->sourceTable($type))
+                ->from($this->associationTable($type))
                 ->where($type . '_id = :userId')
                 ->setParameter('userId', $row['id'])
                 ->executeQuery()
@@ -90,45 +87,41 @@ final readonly class AssociateGroups
     /** @param list<numeric-string|int> $groups */
     public function updateGroups(string $type, int $userId, array $groups): void
     {
-        $transaction = function () use ($type, $userId, $groups): void {
-            $groups    = $this->uniqueGroups($groups);
-            $tableName = $this->associationTable($type);
+        $groups    = $this->uniqueGroups($groups);
+        $tableName = $this->associationTable($type);
 
-            if ($groups === []) {
-                $this->connection->delete($tableName, [$type . '_id' => $userId]);
+        if ($groups === []) {
+            $this->connection->delete($tableName, [$type . '_id' => $userId]);
 
-                return;
-            }
+            return;
+        }
 
-            $associations = $this->connection->createQueryBuilder()
-                ->select('group_id')
-                ->from($tableName)
+        $associations = $this->connection->createQueryBuilder()
+            ->select('group_id')
+            ->from($tableName)
+            ->where($type . '_id = :userId')
+            ->setParameter('userId', $userId)
+            ->executeQuery()
+            ->fetchFirstColumn();
+
+        $delete = array_diff($associations, $groups);
+        $insert = array_values(array_diff($groups, $associations));
+
+        if ($delete) {
+            $this->connection->createQueryBuilder()
+                ->delete($tableName)
                 ->where($type . '_id = :userId')
+                ->andWhere('group_id IN (:groups)')
                 ->setParameter('userId', $userId)
-                ->executeQuery()
-                ->fetchFirstColumn();
+                ->setParameter('groups', $delete, ArrayParameterType::INTEGER)
+                ->executeStatement();
+        }
 
-            $delete = array_diff($associations, $groups);
-            $insert = array_values(array_diff($groups, $associations));
+        if (! $insert) {
+            return;
+        }
 
-            if ($delete) {
-                $this->connection->createQueryBuilder()
-                    ->delete($tableName)
-                    ->where($type . '_id = :userId')
-                    ->andWhere('group_id IN (:groups)')
-                    ->setParameter('userId', $userId)
-                    ->setParameter('groups', $delete, ArrayParameterType::INTEGER)
-                    ->executeStatement();
-            }
-
-            if (! $insert) {
-                return;
-            }
-
-            $this->insertRows($tableName, $userId, $insert);
-        };
-
-        $this->connection->transactional($transaction);
+        $this->insertRows($tableName, $userId, $insert);
     }
 
     private function sourceTable(string $type): string
