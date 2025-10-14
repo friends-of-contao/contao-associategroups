@@ -12,7 +12,7 @@ use function explode;
 
 #[AsCallback('tl_member_group', 'config.ondelete')]
 #[AsCallback('tl_user_group', 'config.ondelete')]
-final readonly class SyncListener
+final readonly class DeleteGroupListener
 {
     public function __construct(private AssociateGroups $associateGroups)
     {
@@ -25,6 +25,6 @@ final readonly class SyncListener
             return;
         }
 
-        $this->associateGroups->sync($parts[1]);
+        $this->associateGroups->deleteGroup($parts[1], (int) $dataContainer->id);
     }
 }

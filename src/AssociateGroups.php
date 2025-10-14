@@ -42,12 +42,7 @@ final readonly class AssociateGroups
 
         foreach ($result as $row) {
             /** @psalm-suppress ArgumentTypeCoercion */
-            $groups = $this->uniqueGroups(StringUtil::deserialize($row['groups'], true));
-            if ($groups === []) {
-                continue;
-            }
-
-            $this->insertRows($type, (int) $row['id'], $groups);
+            $this->updateGroups($type, (int) $row['id'], StringUtil::deserialize($row['groups'], true));
         }
     }
 
@@ -70,7 +65,7 @@ final readonly class AssociateGroups
                 ->fetchFirstColumn();
 
             /** @psalm-suppress ArgumentTypeCoercion */
-            $groups = $this->uniqueGroups(StringUtil::deserialize($row['groups'], true));
+            $groups = $this->uniqueGroups($type, StringUtil::deserialize($row['groups'], true));
             if (array_diff($groups, $associations) !== []) {
                 return true;
             }
@@ -79,7 +74,7 @@ final readonly class AssociateGroups
         return false;
     }
 
-    public function deleteGroups(string $type, int $userId): void
+    public function deleteAssignedGroups(string $type, int $userId): void
     {
         $this->connection->delete($this->associationTable($type), [$type . '_id' => $userId]);
     }
@@ -87,7 +82,7 @@ final readonly class AssociateGroups
     /** @param list<numeric-string|int> $groups */
     public function updateGroups(string $type, int $userId, array $groups): void
     {
-        $groups    = $this->uniqueGroups($groups);
+        $groups    = $this->uniqueGroups($type, $groups);
         $tableName = $this->associationTable($type);
 
         if ($groups === []) {
@@ -124,9 +119,23 @@ final readonly class AssociateGroups
         $this->insertRows($type, $userId, $insert);
     }
 
+    public function deleteGroup(string $type, int $groupId): void
+    {
+        $this->connection->createQueryBuilder()
+            ->delete($this->associationTable($type))
+            ->where('group_id = :groupId')
+            ->setParameter('groupId', $groupId)
+            ->executeStatement();
+    }
+
     private function sourceTable(string $type): string
     {
         return 'tl_' . $type;
+    }
+
+    private function groupTable(string $type): string
+    {
+        return $this->sourceTable($type) . '_group';
     }
 
     public function associationTable(string $type): string
@@ -144,9 +153,17 @@ final readonly class AssociateGroups
      *
      * @return list<int>
      */
-    private function uniqueGroups(array $groups): array
+    private function uniqueGroups(string $type, array $groups): array
     {
-        return array_values(array_unique(array_map('intval', $groups)));
+        $values = array_values(array_unique(array_map('intval', $groups)));
+
+        return $this->connection->createQueryBuilder()
+            ->select('id')
+            ->from($this->groupTable($type))
+            ->where('id IN (:groups)')
+            ->setParameter('groups', $values, ArrayParameterType::INTEGER)
+            ->execute()
+            ->fetchFirstColumn();
     }
 
     /** @param list<int> $groups */

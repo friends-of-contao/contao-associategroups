@@ -21,11 +21,11 @@ services:
       - '@contao.framework'
       - '@contao.routing.scope_matcher'
 
-  FriendsOfContao\AssociateGroups\EventListener\Dca\DeleteGroupsListener:
+  FriendsOfContao\AssociateGroups\EventListener\Dca\DeleteGroupListener:
     arguments:
       - '@FriendsOfContao\AssociateGroups\AssociateGroups'
 
-  FriendsOfContao\AssociateGroups\EventListener\Dca\SyncListener:
+  FriendsOfContao\AssociateGroups\EventListener\Dca\DeleteGroupsListener:
     arguments:
       - '@FriendsOfContao\AssociateGroups\AssociateGroups'
 

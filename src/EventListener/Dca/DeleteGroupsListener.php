@@ -20,6 +20,6 @@ final readonly class DeleteGroupsListener
 
     public function __invoke(DataContainer $dataContainer): void
     {
-        $this->associateGroups->deleteGroups(substr($dataContainer->table, 3), (int) $dataContainer->id);
+        $this->associateGroups->deleteAssignedGroups(substr($dataContainer->table, 3), (int) $dataContainer->id);
     }
 }
