@@ -7,6 +7,14 @@ services:
     arguments:
       - '@database_connection'
 
+  FriendsOfContao\AssociateGroups\Controller\SyncGroupsController:
+    arguments:
+      - '@FriendsOfContao\AssociateGroups\AssociateGroups'
+      - '@router'
+      - '@security.helper'
+      - '@translator'
+      - '@contao.framework'
+
   FriendsOfContao\AssociateGroups\EventListener\BackendStyleListener:
     arguments:
       - '@contao.framework'
