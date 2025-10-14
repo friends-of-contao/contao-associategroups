@@ -1,3 +1,3 @@
 friends_of_contao.associategroups:
-  resource: ../Controller
+  resource: ../src/Controller
   type: attribute
