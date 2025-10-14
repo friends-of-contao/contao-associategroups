@@ -37,6 +37,6 @@ final class Plugin implements BundlePluginInterface, RoutingPluginInterface
             return null;
         }
 
-        return $loader->load(__DIR__ . '/../../config/routing.yal');
+        return $loader->load(__DIR__ . '/../../config/routing.yaml');
     }
 }
