@@ -121,7 +121,7 @@ final readonly class AssociateGroups
             return;
         }
 
-        $this->insertRows($tableName, $userId, $insert);
+        $this->insertRows($type, $userId, $insert);
     }
 
     private function sourceTable(string $type): string
