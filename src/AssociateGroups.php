@@ -162,7 +162,7 @@ final readonly class AssociateGroups
             ->from($this->groupTable($type))
             ->where('id IN (:groups)')
             ->setParameter('groups', $values, ArrayParameterType::INTEGER)
-            ->execute()
+            ->executeQuery()
             ->fetchFirstColumn();
     }
 
