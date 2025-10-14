@@ -6,10 +6,7 @@ namespace FriendsOfContao\AssociateGroups\EventListener\Hook;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\StringUtil;
-
 use FriendsOfContao\AssociateGroups\AssociateGroups;
-
-use function time;
 
 #[AsHook('createNewUser')]
 final readonly class CreateNewUserListener
@@ -26,6 +23,7 @@ final readonly class CreateNewUserListener
             return;
         }
 
+        /** @psalm-suppress ArgumentTypeCoercion */
         $this->associateGroups->updateGroups('member', $userId, $groups);
     }
 }
