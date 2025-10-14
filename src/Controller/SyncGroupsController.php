@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function sprintf;
 
-#[Route('contao/{type}/sync-groups', requirements: ['type' => 'member|user'])]
+#[Route('contao/{type}/sync-groups', requirements: ['type' => 'member|user'], defaults: ['_scope' => 'backend'])]
 final readonly class SyncGroupsController
 {
     public function __construct(
