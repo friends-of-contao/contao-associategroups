@@ -37,7 +37,7 @@ final readonly class UpdateGroupsListener
         }
 
         $type   = substr($dataContainer->table, 3);
-        $groups = StringUtil::deserialize($currentRecord['record'], true);
+        $groups = StringUtil::deserialize($currentRecord['groups'], true);
 
         /** @psalm-suppress ArgumentTypeCoercion */
         $this->associateGroups->updateGroups($type, (int) $currentRecord['id'], $groups);
