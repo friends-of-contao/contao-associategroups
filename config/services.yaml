@@ -25,6 +25,10 @@ services:
     arguments:
       - '@FriendsOfContao\AssociateGroups\AssociateGroups'
 
+  FriendsOfContao\AssociateGroups\EventListener\Dca\SyncListener:
+    arguments:
+      - '@FriendsOfContao\AssociateGroups\AssociateGroups'
+
   FriendsOfContao\AssociateGroups\EventListener\Dca\SyncOperationListener:
     arguments:
       - '@router'
