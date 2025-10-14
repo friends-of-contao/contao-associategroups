@@ -6,14 +6,15 @@ namespace FriendsOfContao\AssociateGroups\EventListener\Hook;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\StringUtil;
-use Doctrine\DBAL\Connection;
+
+use FriendsOfContao\AssociateGroups\AssociateGroups;
 
 use function time;
 
 #[AsHook('createNewUser')]
 final readonly class CreateNewUserListener
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private AssociateGroups $associateGroups)
     {
     }
 
@@ -25,15 +26,6 @@ final readonly class CreateNewUserListener
             return;
         }
 
-        foreach ($groups as $group) {
-            $this->connection->insert(
-                'tl_member_to_group',
-                [
-                    'tstamp'    => time(),
-                    'member_id' => $userId,
-                    'group_id'  => $group,
-                ],
-            );
-        }
+        $this->associateGroups->updateGroups('member', $userId, $groups);
     }
 }
